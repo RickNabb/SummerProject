@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerProject", "SummerProject\SummerProject\SummerProject.csproj", "{2D1B8A66-B792-4A62-885A-C032463B51CA}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SummerProjectContent", "SummerProject\SummerProjectContent\SummerProjectContent.contentproj", "{7480AD53-2637-4A70-9E3C-238E1420140D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D1B8A66-B792-4A62-885A-C032463B51CA}.Debug|x86.ActiveCfg = Debug|x86
+		{2D1B8A66-B792-4A62-885A-C032463B51CA}.Debug|x86.Build.0 = Debug|x86
+		{2D1B8A66-B792-4A62-885A-C032463B51CA}.Release|x86.ActiveCfg = Release|x86
+		{2D1B8A66-B792-4A62-885A-C032463B51CA}.Release|x86.Build.0 = Release|x86
+		{7480AD53-2637-4A70-9E3C-238E1420140D}.Debug|x86.ActiveCfg = Debug|x86
+		{7480AD53-2637-4A70-9E3C-238E1420140D}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

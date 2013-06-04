@@ -19,10 +19,17 @@ namespace SummerProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //Level variables
+        LevelDrawer levelDrawer;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            //resize window
+            graphics.PreferredBackBufferHeight = 500;
+            graphics.PreferredBackBufferWidth = 500;
         }
 
         /// <summary>
@@ -34,6 +41,7 @@ namespace SummerProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            levelDrawer = new LevelDrawer();
 
             base.Initialize();
         }
@@ -48,6 +56,14 @@ namespace SummerProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Texture2D level = Content.Load<Texture2D>("levels/1");
+            levelDrawer.addLevel(level);
+
+            //adds the ground tex
+            levelDrawer.GroundTexture = Content.Load<Texture2D>("ground");
+
+            //starts the drawer
+            levelDrawer.StartDrawer();
         }
 
         /// <summary>
@@ -83,8 +99,12 @@ namespace SummerProject
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin();
             // TODO: Add your drawing code here
+            levelDrawer.drawLevel(spriteBatch);
 
+            //end batch
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

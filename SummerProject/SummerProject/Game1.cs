@@ -18,9 +18,11 @@ namespace SummerProject
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GameState gameState = GameState.Playing;
 
         //Level variables
         LevelDrawer levelDrawer;
+        Player player;
 
         public Game1()
         {
@@ -28,8 +30,8 @@ namespace SummerProject
             Content.RootDirectory = "Content";
 
             //resize window
-            graphics.PreferredBackBufferHeight = 500;
-            graphics.PreferredBackBufferWidth = 500;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 1360;
         }
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace SummerProject
         {
             // TODO: Add your initialization logic here
             levelDrawer = new LevelDrawer();
+            player = new Player();
 
             base.Initialize();
         }
@@ -59,8 +62,9 @@ namespace SummerProject
             Texture2D level = Content.Load<Texture2D>("levels/1");
             levelDrawer.addLevel(level);
 
-            //adds the ground tex
+            //adds the ground tex and playertex
             levelDrawer.GroundTexture = Content.Load<Texture2D>("ground");
+            player.setTex(Content.Load<Texture2D>("player"));
 
             //starts the drawer
             levelDrawer.StartDrawer();
@@ -87,8 +91,29 @@ namespace SummerProject
                 this.Exit();
 
             // TODO: Add your update logic here
+            switch (gameState)
+            {
+                case GameState.Playing:
+                    playingUpdate();
+                    break;
+            }
 
             base.Update(gameTime);
+        }
+        protected void playingUpdate()
+        {
+            //All game logic goes here
+            //Check keyboard input
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.Right))
+                player.xSpeed = 1.5f;
+            else if (keyState.IsKeyDown(Keys.Left))
+                player.xSpeed = -1.5f;
+            else
+                player.xSpeed = 0;
+            //then do in-class updates after keypresses
+            player.Update();
         }
 
         /// <summary>
@@ -101,11 +126,21 @@ namespace SummerProject
 
             spriteBatch.Begin();
             // TODO: Add your drawing code here
-            levelDrawer.drawLevel(spriteBatch);
+            switch (gameState)
+            {
+                case GameState.Playing:
+                    playingDraw();
+                    break;
+            }
 
             //end batch
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        protected void playingDraw()
+        {
+            levelDrawer.drawLevel(spriteBatch);
+            player.Draw(spriteBatch);
         }
     }
 }

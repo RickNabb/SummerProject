@@ -18,7 +18,7 @@ namespace SummerProject
         List<Texture2D> levels = new List<Texture2D>();
 
         //specifies the width and height of tiles
-        int tileSize = 10;
+        int tileSize = 20;
 
         //array to deal with PNG level
         Color[] currLevel;

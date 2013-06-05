@@ -19,6 +19,8 @@ namespace SummerProject
 
         //specifies the width and height of tiles
         int tileSize = 20;
+        //specifies the offset of the drawn level
+        public Vector2 offset = new Vector2(0, 0);
 
         //array to deal with PNG level
         Color[] currLevel;
@@ -28,9 +30,12 @@ namespace SummerProject
         Texture2D groundTexture;
         public Texture2D GroundTexture { get { return groundTexture; } set { groundTexture = value; } }
 
-        public LevelDrawer()
+        //vars for dealing with the currently drawn level
+        public Vector2 currLevelSize = new Vector2(0, 0);
+        Vector2 screenSize;
+        public LevelDrawer(Vector2 screen)
         {
-
+            screenSize = screen;
         }
         private void loadLevel(Texture2D map)
         {
@@ -54,6 +59,8 @@ namespace SummerProject
                         currLevel2D[x, y] = (int)ObjectEnum.Blank;
                     }
                 }
+            currLevelSize.X = map.Width * tileSize;
+            currLevelSize.Y = map.Height * tileSize;
         }
         public void StartDrawer()
         {
@@ -64,12 +71,13 @@ namespace SummerProject
             //scales the tex to 10px width and height
             float scale = tileSize / 256f;
 
-            for (int x = 0; x < currLevel2D.GetLength(0); x++)
-                for (int y = 0; y < currLevel2D.GetLength(1); y++)
+            for (int x = (int)Math.Abs(Math.Ceiling(offset.X/tileSize)); x < (Math.Abs(offset.X) + screenSize.X)/tileSize; x++)
+                for (int y = (int)Math.Abs(Math.Ceiling(offset.Y / tileSize)); y < (Math.Abs(offset.Y) + screenSize.Y)/tileSize; y++)
                     switch (currLevel2D[x,y])
                     {
                         case (int)ObjectEnum.Wall:
-                            batch.Draw(groundTexture, new Vector2(x * tileSize, y * tileSize), null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 1);
+                            Vector2 pos = new Vector2(x * tileSize, y * tileSize);
+                            batch.Draw(groundTexture, pos + offset, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 1);
                             break;
                         default:
                             break;

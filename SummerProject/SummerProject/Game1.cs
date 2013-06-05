@@ -24,14 +24,20 @@ namespace SummerProject
         LevelDrawer levelDrawer;
         Player player;
 
+        //comp vars
+        int s_width;
+        int s_height;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             //resize window
-            graphics.PreferredBackBufferHeight = 768;
-            graphics.PreferredBackBufferWidth = 1360;
+            graphics.PreferredBackBufferHeight = 700;
+            graphics.PreferredBackBufferWidth = 1024;
+
+            s_width = graphics.PreferredBackBufferWidth;
+            s_height = graphics.PreferredBackBufferHeight;
         }
 
         /// <summary>
@@ -43,7 +49,7 @@ namespace SummerProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            levelDrawer = new LevelDrawer();
+            levelDrawer = new LevelDrawer(new Vector2(s_width, s_height));
             player = new Player();
 
             base.Initialize();
@@ -103,15 +109,51 @@ namespace SummerProject
         protected void playingUpdate()
         {
             //All game logic goes here
+            //test to see if screen can move any farther in any dir
+            bool[] levelCantMove = new bool[4];
+            levelCantMove[(int)Directions.Right] = levelDrawer.offset.X >= 0;
+            levelCantMove[(int)Directions.Left] = levelDrawer.offset.X <= -(levelDrawer.currLevelSize.X-s_width);
+            levelCantMove[(int)Directions.Down] = levelDrawer.offset.Y <= -(levelDrawer.currLevelSize.Y - s_height);
+            levelCantMove[(int)Directions.Up] = levelDrawer.offset.Y >= 0;
+
             //Check keyboard input
             KeyboardState keyState = Keyboard.GetState();
 
             if (keyState.IsKeyDown(Keys.Right))
-                player.xSpeed = 1.5f;
+            {
+                //player.xSpeed = 1.5f;
+                if (!levelCantMove[(int)Directions.Left])
+                    levelDrawer.offset.X -= 1.5f;
+            }
             else if (keyState.IsKeyDown(Keys.Left))
-                player.xSpeed = -1.5f;
+            {
+                //player.xSpeed = -1.5f;
+                if (!levelCantMove[(int)Directions.Right])
+                    levelDrawer.offset.X += 1.5f;
+            }
             else
-                player.xSpeed = 0;
+            {
+               // player.xSpeed = 0;
+
+            }
+
+            if (keyState.IsKeyDown(Keys.Up))
+            {
+                //player.ySpeed = -1.5f;
+                if (!levelCantMove[(int)Directions.Up])
+                    levelDrawer.offset.Y += 1.5f;
+            }
+            else if (keyState.IsKeyDown(Keys.Down))
+            {
+                //player.ySpeed = 1.5f;
+                if (!levelCantMove[(int)Directions.Down])
+                    levelDrawer.offset.Y -= 1.5f;
+            }
+            else
+            {
+                //player.ySpeed = 0;
+            }
+
             //then do in-class updates after keypresses
             player.Update();
         }
